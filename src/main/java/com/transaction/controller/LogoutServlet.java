@@ -11,10 +11,10 @@ public class LogoutServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = req.getSession(false);
-        // false → don't create new session if none exists
+
 
         if (session != null) {
-            session.invalidate();  // destroys session
+            session.invalidate();
         }
 
         resp.setContentType("text/plain");

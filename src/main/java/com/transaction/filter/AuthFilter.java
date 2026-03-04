@@ -23,7 +23,7 @@ public class AuthFilter implements Filter {
                 session.getAttribute("customerId") != null);
 
         if (loggedIn) {
-            // Allow request to go to servlet
+
             chain.doFilter(request, response);
         } else {
             // Block request

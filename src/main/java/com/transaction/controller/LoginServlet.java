@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
 
         if (user != null) {
 
-            // SESSION CREATION
+
             HttpSession session = req.getSession();
             session.setAttribute("customerId", user.getCustomerId());
             session.setAttribute("role", user.getRole());

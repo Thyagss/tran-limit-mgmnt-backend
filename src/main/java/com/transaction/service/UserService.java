@@ -13,7 +13,6 @@ public class UserService {
                                 String mobile,
                                 String password) {
 
-        // Default role for new users
         String role = "USER";
 
         User user = new User(name, username, email, mobile, password, role);
