@@ -2,6 +2,7 @@ package com.transaction.service;
 
 import com.transaction.dao.UserDAO;
 import com.transaction.model.User;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class UserService {
 
@@ -24,10 +25,12 @@ public class UserService {
 
         User user = userDAO.findByUsername(username);
 
-        if (user != null && user.getPassword().equals(password)) {
-            return user;
-        }
+        if(user != null) {
 
+            if (BCrypt.checkpw(password, user.getPassword())) {
+                return user;
+            }
+        }
         return null;
     }
 }

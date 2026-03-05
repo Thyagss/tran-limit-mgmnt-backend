@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
+import org.mindrot.jbcrypt.BCrypt;
 
 @WebServlet("/signup")
 public class SignupServlet extends HttpServlet {
@@ -22,9 +23,9 @@ public class SignupServlet extends HttpServlet {
         String mobile = request.getParameter("mobile");
         String password = request.getParameter("password");
 
-        boolean success = userService.registerUser(
-                name, username, email, mobile, password
-        );
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+
+        boolean success = userService.registerUser(name, username, email, mobile, hashedPassword);
 
         response.setContentType("text/plain");
 
