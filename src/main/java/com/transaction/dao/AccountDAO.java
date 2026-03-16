@@ -2,6 +2,7 @@ package com.transaction.dao;
 
 import com.transaction.model.Account;
 import com.transaction.util.DBConnection;
+import com.transaction.util.DBconfig;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +14,7 @@ public class AccountDAO {
 
         String sql = "INSERT INTO accounts (customer_id, account_number, balance, daily_limit) VALUES (?, ?, ?, ?)";
 
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DBconfig.getDataSource().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, account.getCustomerId());

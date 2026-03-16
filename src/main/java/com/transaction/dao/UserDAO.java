@@ -2,6 +2,7 @@ package com.transaction.dao;
 
 import com.transaction.model.User;
 import com.transaction.util.DBConnection;
+import com.transaction.util.DBconfig;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,7 +16,7 @@ public class UserDAO {
         String sql = "INSERT INTO users (name, username, email, mobile, password, role) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DBconfig.getDataSource().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, user.getName());
