@@ -1,7 +1,6 @@
 package com.transaction.dao;
 
 import com.transaction.model.User;
-import com.transaction.util.DBConnection;
 import com.transaction.util.DBconfig;
 
 import java.sql.Connection;
@@ -40,7 +39,7 @@ public class UserDAO {
 
         String sql = "SELECT * FROM users WHERE username = ?";
 
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DBconfig.getDataSource().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, username);
