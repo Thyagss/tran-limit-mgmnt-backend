@@ -19,8 +19,8 @@ public class DBconfig {
 
             HikariConfig config = new HikariConfig();
             config.setJdbcUrl(prop.getProperty("db.url"));
-            config.setPassword(prop.getProperty("db.username"));
-            config.setUsername(prop.getProperty("db.password"));
+            config.setPassword(prop.getProperty("db.password"));
+            config.setUsername(prop.getProperty("db.username"));
             config.setDriverClassName(prop.getProperty("db.driver"));
 
             config.setMaximumPoolSize(Integer.parseInt(prop.getProperty("hikari.maxPoolSize")));
@@ -32,6 +32,7 @@ public class DBconfig {
             config.setPoolName(prop.getProperty("hikari.pool.name"));
 
             dataSource = new HikariDataSource(config);
+
         }
         catch (IOException e) {
             throw new RuntimeException(e);
