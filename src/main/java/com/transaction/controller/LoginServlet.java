@@ -6,6 +6,8 @@ import com.transaction.service.UserService;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
+
+import com.transaction.util.ValidationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +23,16 @@ public class LoginServlet extends HttpServlet {
 
         String username = req.getParameter("username");
         String password = req.getParameter("password");
+
+        if (!ValidationUtil.isValidUsername(username)) {
+            resp.getWriter().write("Invalid Username Format");
+            return;
+        }
+
+        if (password == null || password.isEmpty()) {
+            resp.getWriter().write("Password cannot be empty");
+            return;
+        }
 
         logger.info("Login attempt for username: {}", username);
 
