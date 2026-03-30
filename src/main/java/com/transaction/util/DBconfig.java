@@ -2,12 +2,15 @@ package com.transaction.util;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import java.io.IOException;
+import liquibase.Liquibase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.Properties;
 import java.io.InputStream;
 
 public class DBconfig {
 
+    private static final Logger logger = LoggerFactory.getLogger(DBconfig.class);
     private static final HikariDataSource dataSource;
 
     static {
@@ -32,9 +35,13 @@ public class DBconfig {
             config.setPoolName(prop.getProperty("hikari.pool.name"));
 
             dataSource = new HikariDataSource(config);
+            logger.info("HikariCP pool '{}' initialized successfully", config.getPoolName());
+
+            LiquibaseRunner.run(dataSource);
 
         }
-        catch (IOException e) {
+        catch (Exception e) {
+            logger.error("Failed to initialize DBconfig", e);
             throw new RuntimeException(e);
         }
 
