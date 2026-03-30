@@ -1,0 +1,48 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="2" author="thyags">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="accounts"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="accounts">
+
+            <column name="account_id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="customer_id" type="INT"/>
+
+            <column name="account_number" type="VARCHAR(20)">
+                <constraints unique="true"/>
+            </column>
+
+            <column name="balance" type="DECIMAL(15,2)"
+                    defaultValue="0.00"/>
+
+            <column name="daily_limit" type="DECIMAL(15,2)"
+                    defaultValue="10000.00"/>
+
+            <column name="created_at" type="TIMESTAMP"
+                    defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="accounts"
+                baseColumnNames="customer_id"
+                referencedTableName="users"
+                referencedColumnNames="customer_id"
+                constraintName="fk_account_user"
+                onDelete="CASCADE"/>
+
+    </changeSet>
+
+</databaseChangeLog>
