@@ -1,7 +1,6 @@
 package com.transaction.dao;
 
 import com.transaction.model.Account;
-import com.transaction.util.DBConnection;
 import com.transaction.util.DBconfig;
 
 import java.sql.Connection;
@@ -29,4 +28,54 @@ public class AccountDAO {
             return false;
         }
     }
+
+    public double getBalance(int accountId, Connection conn) throws Exception {
+
+        String sql = "SELECT balance FROM accounts WHERE account_id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, accountId);
+
+            var rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getDouble("balance");
+            }
+        }
+
+        return 0;
+    }
+
+    public void updateBalance(int accountId, double newBalance, Connection conn) throws Exception {
+
+        String sql = "UPDATE accounts SET balance = ? WHERE account_id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setDouble(1, newBalance);
+            ps.setInt(2, accountId);
+
+            ps.executeUpdate();
+        }
+    }
+
+    public double getDailyLimit(int accountId, Connection conn) throws Exception {
+
+        String sql = "SELECT daily_limit FROM accounts WHERE account_id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, accountId);
+
+            var rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getDouble("daily_limit");
+            }
+        }
+
+        return 0;
+    }
+
 }
