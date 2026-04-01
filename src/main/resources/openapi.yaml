@@ -1,0 +1,197 @@
+openapi: 3.0.0
+
+info:
+  title: Transaction Limit Management API
+  description: APIs for user auth, account management, and transaction processing. Built using Java Servlets with Session-based authentication
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/tran-limit-mgmnt-backend-1.0-SNAPSHOT
+
+tags:
+  - name: Auth
+  - name: Account
+  - name: Transaction
+  - name: Utilities
+
+paths:
+
+  /signup:
+    post:
+      tags: [Auth]
+      summary: Register new user
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SignupRequest'
+      responses:
+        '200':
+          description: User registered successfully
+        '400':
+          description: Invalid input
+
+  /login:
+    post:
+      tags: [Auth]
+      summary: Login and create session
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful — JSESSIONID cookie set
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: JSESSIONID=ABC123; Path=/; HttpOnly
+        '401':
+          description: Invalid credentials
+
+  /logout:
+    post:
+      tags: [Auth]
+      summary: Logout and invalidate session
+      responses:
+        '200':
+          description: Logged out successfully
+
+  /account/create:
+    post:
+      tags: [Account]
+      summary: Create bank account for logged-in user
+      description: Generates a new account for the user | Default balance = 0.00, daily limit = 10000.00.
+      security:
+        - sessionCookie: []
+      responses:
+        '200':
+          description: Account created successfully
+        '401':
+          description: Not logged in
+        '500':
+          description: Account creation failed
+
+  /transaction:
+    post:
+      tags: [Transaction]
+      summary: Deposit or Withdraw
+      description: deposit adds to balance | withdraw checks balance and daily limit before deducting.
+      security:
+        - sessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TransactionRequest'
+      responses:
+        '200':
+          description: Success or Failed
+        '401':
+          description: Not logged in
+
+    get:
+      tags: [Transaction]
+      summary: Get transaction history
+      security:
+        - sessionCookie: []
+      parameters:
+        - name: action
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [history]
+        - name: accountId
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: List of transactions
+        '401':
+          description: Not logged in
+
+  /qr:
+    get:
+      tags: [Utilities]
+      summary: Generate QR code for a transaction
+      description: Returns a 300x300 PNG encoding "TXN:{txnId}".
+      parameters:
+        - name: txnId
+          in: query
+          required: true
+          schema:
+            type: string
+            example: "42"
+      responses:
+        '200':
+          description: QR code PNG image
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: txnId is required
+
+components:
+
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: JSESSIONID
+      description: Session cookie set after successful login.
+
+  schemas:
+
+    SignupRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Karthik
+        username:
+          type: string
+          example: karthy
+        email:
+          type: string
+          example: karthy@gmail.com
+        mobile:
+          type: string
+          example: "9876543210"
+        password:
+          type: string
+          example: pass123
+
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          example: karthy
+        password:
+          type: string
+          example: pass123
+
+    TransactionRequest:
+      type: object
+      properties:
+        action:
+          type: string
+          enum: [deposit, withdraw]
+          example: withdraw
+        accountId:
+          type: integer
+          example: 1
+        amount:
+          type: number
+          example: 500.00
