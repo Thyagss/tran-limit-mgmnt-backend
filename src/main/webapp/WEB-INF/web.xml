@@ -44,6 +44,27 @@
     <servlet-name>AccountServlet</servlet-name>
     <url-pattern>/account/create</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>TransactionServlet</servlet-name>
+        <servlet-class>com.transaction.controller.TransactionServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>TransactionServlet</servlet-name>
+        <url-pattern>/transaction</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>QRServlet</servlet-name>
+        <servlet-class>com.transaction.controller.QRServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>QRServlet</servlet-name>
+        <url-pattern>/qr</url-pattern>
+    </servlet-mapping>
+
 	
 	<filter>
     <filter-name>AuthFilter</filter-name>
@@ -67,7 +88,7 @@
 
     <filter-mapping>
         <filter-name>RoleFilter</filter-name>
-        <url-pattern>/admin/*</url-pattern>
+        <url-pattern>/user/*</url-pattern>
     </filter-mapping>
 
 </web-app>
