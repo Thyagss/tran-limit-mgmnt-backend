@@ -1,14 +1,12 @@
 package com.transaction.filter;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.*;
-        import java.io.IOException;
+import java.io.IOException;
 
 
 public class AuthFilter implements Filter {
 
-    @Override
     public void doFilter(ServletRequest request,
                          ServletResponse response,
                          FilterChain chain)

@@ -6,7 +6,6 @@ import com.transaction.service.UserService;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
-
 import com.transaction.util.ValidationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

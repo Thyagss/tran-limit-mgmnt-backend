@@ -5,8 +5,6 @@ import com.transaction.service.UserService;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
-
-import com.transaction.util.DBconfig;
 import com.transaction.util.ValidationUtil;
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
